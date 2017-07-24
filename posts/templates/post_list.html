@@ -5,7 +5,7 @@
 </head>
 <body>
     {% for object in object_list %}
-        {{object.title}} <br>
+		<a href="{% url 'detail' post_id=object.id %}">{{object.title}}</a>
         {{object.content}} <br>
         {{object.timestamp}} <br>
         {{object.updated}} <br>
