@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Post
 
 def post_create(request):
@@ -7,8 +7,12 @@ def post_create(request):
 def post_delete(request):
 	return render(request, 'post_delete.html', {})
 
-def post_detail(request):
-	return render(request, 'post_detail.html', {})
+def post_detail(request, post_id):
+	instance = get_object_or_404(Post, id=post_id)
+	context = {
+	"instance" : instance
+	}
+	return render(request, 'post_detail.html', context)
 
 def post_list(request):
 	object_list = Post.objects.all()
