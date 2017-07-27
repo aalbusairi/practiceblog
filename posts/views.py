@@ -2,9 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from .forms import PostForm
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def post_create(request):
-	form = PostForm(request.POST or None)
+	form = PostForm(request.POST or None, request.FILES or None)
 	if form.is_valid():
 		form.save()
 		messages.success(request, "Succesfuly Created")
@@ -18,7 +19,7 @@ def post_create(request):
 def post_delete(request, post_id):
 	instance = get_object_or_404(Post, id=post_id)
 	instance.delete()
-	messages.success(request, "Succesfully Deleted")
+	messages.warning(request, "Succesfully Deleted")
 	return redirect("posts:list")
 
 def post_detail(request, post_id):
@@ -29,15 +30,23 @@ def post_detail(request, post_id):
 	return render(request, 'post_detail.html', context)
 
 def post_list(request):
-	object_list = Post.objects.all()
+	object_list = Post.objects.all().order_by("-timestamp","-updated")
+	paginator = Paginator(object_list, 5)
+	page = request.GET.get('page')
+	try:
+		objects = paginator.page(page)
+	except PageNotAnInteger:
+		objects=paginator.page(1)
+	except EmptyPage:
+		objects = paginator.page(paginator.num_pages)		
 	context = {
-	"object_list": object_list
+	"object_list": objects
 	}
 	return render(request, 'post_list.html', context)
 
 def post_update(request, post_id):
 	instance = get_object_or_404(Post, id=post_id)
-	form = PostForm(request.POST or None, instance= instance)
+	form = PostForm(request.POST or None, request.FILES or None, instance= instance)
 	if form.is_valid():
 		form.save()
 		messages.success(request, "Succesfuly Updated")

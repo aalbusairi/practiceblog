@@ -3,6 +3,7 @@ from django.urls import reverse
 
 class Post(models.Model):
 	title = models.CharField(max_length=20)
+	image = models.ImageField(null=True, blank=True, upload_to="post_images")
 	content = models.TextField()
 	timestamp = models.DateTimeField(auto_now=True)
 	updated = models.DateTimeField(auto_now_add=True)
@@ -12,3 +13,6 @@ class Post(models.Model):
 
 	def get_absolute_url(self):
 		return reverse('posts:detail', kwargs={"post_id": self.id})	
+
+	class Meta:
+		ordering = ["-timestamp", "-updated"]

@@ -1,17 +1,22 @@
 {% extends "base.html" %}
 
 {% block title %}
-    Detail
+	Detail
 {% endblock title %}
 
 
 {% block content %}
 
-	<ol>
-		<li>{{instance.title}}</li>
-		<li>{{instance.content}}</li>
-		<li>{{instance.timestamp}}</li>
-		<li>{{instance.updated}}</li>
-		<a href="{% url 'posts:list' %}">Back to list</a>
+<div class="row">
+	<div class="col-sm-6 col-sm-offset-3">
+	{% if instance.image %}
+        <img src="{{instance.image.url}}" alt="" class="img-responsive">
+    {% endif %}
+		<h1>{{instance.title}} <small>{{instance.timestamp}}</small></h1>
+		{{instance.content| linebreaks}}
+	</div>
+</div>
+
+<a href="{% url 'posts:list' %}">Back to List</a>
 
 {% endblock content %}
