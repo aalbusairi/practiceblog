@@ -1,15 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Post</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}
+ 	List
+{% endblock title %}
+
+
+{% block content %}
+
     {% for object in object_list %}
-		<a href="{% url 'detail' post_id=object.id %}">{{object.title}}</a>
+		<a href="{% url 'posts:detail' post_id=object.id %}">{{object.title}}</a>
         {{object.content}} <br>
         {{object.timestamp}} <br>
         {{object.updated}} <br>
         {{object.id}} <br>
     {% endfor %}
-</body>
-</html>
+
+{% endblock content %}

@@ -1,14 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Post</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}
+    Detail
+{% endblock title %}
+
+
+{% block content %}
+
 	<ol>
 		<li>{{instance.title}}</li>
 		<li>{{instance.content}}</li>
 		<li>{{instance.timestamp}}</li>
 		<li>{{instance.updated}}</li>
-		<a href="{% url 'list' %}">Back to list</a>
-</body>
-</html>
+		<a href="{% url 'posts:list' %}">Back to list</a>
+
+{% endblock content %}
