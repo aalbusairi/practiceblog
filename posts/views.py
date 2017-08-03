@@ -6,6 +6,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from urllib.parse import quote
 from django.http import Http404
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 def post_create(request):
 	if not (request.user.is_staff or request.user.is_superuser):
@@ -33,6 +34,9 @@ def post_delete(request, post_slug):
 
 def post_detail(request, post_slug):
 	instance = get_object_or_404(Post, slug=post_slug)
+	if instance.publish>timezone.now().date() or instance .draft:
+		if not (request.user.is_staff or request.user.is_superuser):
+			raise Http404
 	context = {
 	"instance" : instance,
 	"share_string": quote(instance.content),
@@ -40,7 +44,12 @@ def post_detail(request, post_slug):
 	return render(request, 'post_detail.html', context)
 
 def post_list(request):
-	object_list = Post.objects.all().order_by("-timestamp","-updated")
+	today = timezone.now().date()
+	object_list = Post.objects.filter(draft=False).filter(publish__lte=today)
+	if request.user.is_staff or request.user.is_superuser:
+		object_list = Post.objects.all()
+
+
 	paginator = Paginator(object_list, 5)
 	page = request.GET.get('page')
 	try:
