@@ -54,8 +54,9 @@
 		}
 	</script>
 	<br><br>
-	{% include "django_comments.html" %}
-	<a href="{% url 'posts:list' %}">Back to List</a>
+	{# {% include "django_comments.html" %} #}
+	<div class="fb-like" data-href="{{request.build_absolute_uri}}" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+	<div class="fb-comments" data-href="{{request.build_absolute_uri}}" data-numposts="5"></div>
 	</div>
 </div>
 </div>
