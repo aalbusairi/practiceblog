@@ -5,12 +5,15 @@ from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from urllib.parse import quote
 from django.http import Http404
+from django.contrib.auth.models import User
 
 def post_create(request):
 	if not (request.user.is_staff or request.user.is_superuser):
 		raise Http404
 	form = PostForm(request.POST or None, request.FILES or None)
 	if form.is_valid():
+		post = form.save(commit = False)
+		post.author = request.user
 		form.save()
 		messages.success(request, "Succesfuly Created")
 		return redirect("posts:list")
