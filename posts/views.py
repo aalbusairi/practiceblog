@@ -7,6 +7,7 @@ from urllib.parse import quote
 from django.http import Http404
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.db.models import Q
 
 def post_create(request):
 	if not (request.user.is_staff or request.user.is_superuser):
@@ -49,6 +50,10 @@ def post_list(request):
 	if request.user.is_staff or request.user.is_superuser:
 		object_list = Post.objects.all()
 
+	query = request.GET.get("q")
+	if query:
+		object_list = object_list.filter(title__icontains=query)
+
 
 	paginator = Paginator(object_list, 5)
 	page = request.GET.get('page')
@@ -59,7 +64,10 @@ def post_list(request):
 	except EmptyPage:
 		objects = paginator.page(paginator.num_pages)		
 	context = {
-	"object_list": objects
+	"object_list": objects,
+    "title": "List",
+    "user": request.user,
+    "today": today,
 	}
 	return render(request, 'post_list.html', context)
 

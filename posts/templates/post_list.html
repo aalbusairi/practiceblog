@@ -10,6 +10,10 @@
 <h1>List</h1>
 
 <div class="row">
+<form action="" method="GET">
+	<input type="text" name='q' placeholder="Search posts" value="{{request.Get.q}}">
+	<input type="submit" value="Search">
+</form>
 {% for object in object_list %}
   <div class="col-sm-6 col-md-4">
 	<div class="thumbnail">
@@ -34,7 +38,7 @@
 <div class="pagination">
 		<span class="step-links">
 			{% if object_list.has_previous %}
-				<a href="?page={{ object_list.previous_page_number }}">previous</a>
+				<a href="?page={{ object_list.previous_page_number }}&q={{ request.GET.q }}">previous</a>
 			{% endif %}
 
 			<span class="current">
@@ -42,7 +46,7 @@
 			</span>
 
 			{% if object_list.has_next %}
-				<a href="?page={{ object_list.next_page_number }}">next</a>
+				<a href="?page={{ object_list.next_page_number }}&q={{ request.GET.q }}">next</a>
 			{% endif %}
 		</span>
 </div>       
