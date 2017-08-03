@@ -10,6 +10,8 @@ class Post(models.Model):
 	slug = models.SlugField(unique=True)
 	image = models.ImageField(null=True, blank=True, upload_to="post_images")
 	content = models.TextField()
+	draft = models.BooleanField(default=False)
+	publish = models.DateField(auto_now=False, auto_now_add=False)
 	timestamp = models.DateTimeField(auto_now=True)
 	updated = models.DateTimeField(auto_now_add=True)
 
