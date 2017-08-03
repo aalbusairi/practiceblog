@@ -1,13 +1,30 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post
+from .models import Post, Like
 from .forms import PostForm
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from urllib.parse import quote
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db.models import Q
+
+def ajax_like(request, post_id):
+	post_object = Post.objects.get(id=post_id)
+	new_like, created = Like.objects.get_or_create(user=request.user, post=post_object)
+
+	if created:
+		action="like"
+	else:
+		new_like.delete()
+		action="unlike"
+
+	post_like_count = post_object.like_set.all().count()
+	response = {
+		"action": action,
+		"post_like_count": post_like_count,
+	}
+	return JsonResponse(response, safe=False)
 
 def post_create(request):
 	if not (request.user.is_staff or request.user.is_superuser):
@@ -38,9 +55,18 @@ def post_detail(request, post_slug):
 	if instance.publish>timezone.now().date() or instance .draft:
 		if not (request.user.is_staff or request.user.is_superuser):
 			raise Http404
+	if request.user.is_authenticated():
+		if Like.objects.filter(post=instance, user=request.user).exists():
+			liked = True
+		else:
+			liked = False
+	post_like_count = instance.like_set.all().count()
+
 	context = {
 	"instance" : instance,
 	"share_string": quote(instance.content),
+	"post_like_count": post_like_count,
+	"liked":liked,
 	}
 	return render(request, 'post_detail.html', context)
 

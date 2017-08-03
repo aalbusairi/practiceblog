@@ -39,4 +39,9 @@ def pre_save_post_receiver(sender, instance, *args, **kwargs):
 	if not instance.slug:
 		instance.slug=create_slug(instance)
 
-pre_save.connect(pre_save_post_receiver,sender=Post)						
+pre_save.connect(pre_save_post_receiver,sender=Post)	
+
+class Like(models.Model):
+	user = models.ForeignKey(User)
+	post = models.ForeignKey(Post)
+	created = models.DateTimeField(auto_now_add=True)
