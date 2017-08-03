@@ -52,9 +52,13 @@ def post_list(request):
 
 	query = request.GET.get("q")
 	if query:
-		object_list = object_list.filter(title__icontains=query)
-
-
+			object_list = object_list.filter(
+			Q(title__icontains=query)|
+			Q(content__icontains=query)|
+			Q(author__first_name__icontains=query)|
+			Q(author__last_name__icontains=query)
+			).distinct()
+			
 	paginator = Paginator(object_list, 5)
 	page = request.GET.get('page')
 	try:
@@ -65,9 +69,9 @@ def post_list(request):
 		objects = paginator.page(paginator.num_pages)		
 	context = {
 	"object_list": objects,
-    "title": "List",
-    "user": request.user,
-    "today": today,
+	"title": "List",
+	"user": request.user,
+	"today": today,
 	}
 	return render(request, 'post_list.html', context)
 

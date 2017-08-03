@@ -17,18 +17,20 @@
 	<div class="caption">
 	<h3>{{instance.title}}</a><small> {{instance.publish|timesince}} ago</small></h3>
 	<p>{{instance.content|linebreaks|truncatechars:100}}</p>
-	Author: {{instance.author.get_full_name}} <br>
+	Author: {{instance.author.get_full_name}} <br><br>
 	<a href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}">
 	Share on Facebook</a><br>
 	<a href="https://twitter.com/home?status={{share_string}}%20{{request.build_absolute_uri}}">
     Share on Twitter</a><br>
 	<a href="https://www.linkedin.com/shareArticle?mini=true&url={{request.build_absolute_uri}}&title={{instance.title|urlify}}&summary={{instance.content|truncatechars:35|urlify}}&source={{request.build_absolute_uri}}">
-    Share on Linkedin</a><br>
+    Share on Linkedin</a><br><br>
+    {% include "django_comments.html" %}
+    <a href="{% url 'posts:list' %}">Back to List</a>
 	</div>
 </div>
 </div>
 </div>
-<a href="{% url 'posts:list' %}">Back to List</a>
+
 
 {% endblock content %}
 
