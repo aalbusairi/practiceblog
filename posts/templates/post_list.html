@@ -7,13 +7,7 @@
 
 {% block content %}
 
-<h1>List</h1>
-
 <div class="row">
-<form action="" method="GET">
-	<input type="text" name='q' placeholder="Search posts" value="{{request.Get.q}}">
-	<input type="submit" value="Search">
-</form>
 {% for object in object_list %}
   <div class="col-sm-6 col-md-4">
 	<div class="thumbnail">
