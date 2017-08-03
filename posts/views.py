@@ -8,6 +8,57 @@ from django.http import Http404, JsonResponse
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db.models import Q
+from .forms import UserSignup, UserLogin
+from django.contrib.auth import authenticate, login, logout
+
+def usersignup(request):
+	context = {}
+	form = UserSignup()
+	context['form'] = form
+	if request.method == 'POST':
+		form = UserSignup(request.POST)
+		if form.is_valid():
+			user = form.save()
+			username = user.username
+			password = user.password
+
+			user.set_password(password)
+			user.save()
+
+			auth_user = authenticate(username=username, password=password)
+			login(request, auth_user)
+
+			return redirect("posts:list")
+		messages.error(request, form.errors)
+		return redirect("posts:signup")
+	return render(request, 'signup.html', context)
+
+def userlogin(request):
+	context = {}
+	form = UserLogin()
+	context['form'] = form
+	if request.method == 'POST':
+		form = UserLogin(request.POST)
+		if form.is_valid():
+
+			username = form.cleaned_data['username']
+			password = form.cleaned_data['password']
+
+			auth_user = authenticate(username=username, password=password)
+			if auth_user is not None:
+				login(request, auth_user)
+				return redirect('posts:list')
+
+			messages.error(request, "Wrong username/password combination. Please try again.")
+			return redirect("posts:login")
+		messages.error(request, form.errors)
+		return redirect("posts:login")
+	return render(request, 'login.html', context)
+
+def userlogout(request):
+	logout(request)
+	return redirect("posts:list")
+		
 
 def ajax_like(request, post_id):
 	post_object = Post.objects.get(id=post_id)
