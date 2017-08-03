@@ -10,58 +10,56 @@
 
 <div class="row">
 	<div class="col-sm-6 col-sm-offset-3">
-	<div class="thumbnail">
-	{% if instance.image %}
-		<img src="{{instance.image.url}}" alt="" class="img-responsive">
-	{% endif %}
-	<div class="caption">
-	<h3>{{instance.title}}</a><small> {{instance.publish|timesince}} ago</small></h3>
-	<p>{{instance.content|linebreaks|truncatechars:100}}</p>
-	Author: {{instance.author.get_full_name}} <br><br>
-	<a href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}">
-	Share on Facebook</a><br>
-	<a href="https://twitter.com/home?status={{share_string}}%20{{request.build_absolute_uri}}">
-	Share on Twitter</a><br>
-	<a href="https://www.linkedin.com/shareArticle?mini=true&url={{request.build_absolute_uri}}&title={{instance.title|urlify}}&summary={{instance.content|truncatechars:35|urlify}}&source={{request.build_absolute_uri}}">
-	Share on Linkedin</a><br><br>
+		<div class="thumbnail">
+		{% if instance.image %}
+			<img src="{{instance.image.url}}" alt="" class="img-responsive">
+		{% endif %}
+			<div class="caption">
+				<h3>{{instance.title}}</a><small> {{instance.publish|timesince}} ago</small></h3>
+				<p>{{instance.content|linebreaks|truncatechars:100}}</p>
+				Author: {{instance.author.get_full_name}} <br><br>
+				<a href="https://www.facebook.com/sharer/sharer.php?u={{request.build_absolute_uri}}">Share on Facebook</a><br>
+				<a href="https://twitter.com/home?status={{share_string}}%20{{request.build_absolute_uri}}">Share on Twitter</a><br>
+				<a href="https://www.linkedin.com/shareArticle?mini=true&url={{request.build_absolute_uri}}&title={{instance.title|urlify}}&summary={{instance.content|truncatechars:35|urlify}}&source={{request.build_absolute_uri}}">Share on Linkedin</a><br><br>
 
-	<button class="btn" onclick="ajax_like()">
-	<span id="likes_count">{{ post_like_count }}</span>
-	<span id= "heart" class="glyphicon glyphicon-heart {% if liked %}text-danger{% endif %}" aria-hidden="true"></span>
-	</button>
-	
-	<script type="text/javascript">
-		function ajax_like() {
-			console.log("Like/Unlike clicked!");
-			$.ajax(
-				{
-					type:'GET',
-					url: '{% url "posts:like_button" post_id=instance.id %}',
-					error: function(){
-						console.log('error');
-					},
-					success: function(data){ 
-						$("#likes_count").text(data.post_like_count);
+				<button class="btn" onclick="ajax_like()">
+					<span id="likes_count">{{ post_like_count }}</span>
+					<span id= "heart" class="glyphicon glyphicon-heart {% if liked %}text-danger{% endif %}" aria-hidden="true"></span>
+				</button>
+				
 
-						if(data.action==="like"){
-							$("#heart").addClass("text-danger");
-						}else{
-							$("#heart").removeClass("text-danger")  
-						}
-					},
-				}
-			);
-		}
-	</script>
-	<br><br>
-	{# {% include "django_comments.html" %} #}
-	<div class="fb-like" data-href="{{request.build_absolute_uri}}" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
-	<div class="fb-comments" data-href="{{request.build_absolute_uri}}" data-numposts="5"></div>
+				<br><br>
+				{# {% include "django_comments.html" %} #}
+			</div>
+		</div>
+		<div class="fb-like col-sm-12" data-href="{{request.build_absolute_uri}}" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+		<div class="fb-comments col-sm-12" data-href="{{request.build_absolute_uri}}" data-numposts="5"></div></div>
 	</div>
 </div>
-</div>
-</div>
 
 
+<script type="text/javascript">
+	function ajax_like() {
+		console.log("Like/Unlike clicked!");
+		$.ajax(
+			{
+				type:'GET',
+				url: '{% url "posts:like_button" post_id=instance.id %}',
+				error: function(){
+					console.log('error');
+				},
+				success: function(data){ 
+					$("#likes_count").text(data.post_like_count);
+
+					if(data.action==="like"){
+						$("#heart").addClass("text-danger");
+					}else{
+						$("#heart").removeClass("text-danger")  
+					}
+				},
+			}
+		);
+	}
+</script>
 {% endblock content %}
 
