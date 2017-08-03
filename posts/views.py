@@ -3,6 +3,7 @@ from .models import Post
 from .forms import PostForm
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from urllib.parse import quote
 
 def post_create(request):
 	form = PostForm(request.POST or None, request.FILES or None)
@@ -25,7 +26,8 @@ def post_delete(request, post_slug):
 def post_detail(request, post_slug):
 	instance = get_object_or_404(Post, slug=post_slug)
 	context = {
-	"instance" : instance
+	"instance" : instance,
+	"share_string": quote(instance.content),
 	}
 	return render(request, 'post_detail.html', context)
 
