@@ -21,8 +21,8 @@
 		<p>{{object.content|linebreaks|truncatechars:100}}</p>
 		<p><a href="{{ object.get_absolute_url }}" class="btn btn-primary" role="button">
 		View</a>
-		<a href="{% url 'posts:update' post_id=object.id %}" class="btn btn-success">Edit</a>
-		<a href="{% url 'posts:delete' post_id=object.id %}" class="btn btn-danger">Delete</a>  
+		<a href="{% url 'posts:update' post_slug=object.slug %}" class="btn btn-success">Edit</a>
+		<a href="{% url 'posts:delete' post_slug=object.slug %}" class="btn btn-danger">Delete</a>  
 	  </div>
 	</div>
   </div> 
