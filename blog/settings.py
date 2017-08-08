@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django_comments',
     'posts',
     'crispy_forms',
+    'rest_framework',
+    'api',
 ]
 SITE_ID = 1
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
