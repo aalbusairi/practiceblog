@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 	'api',
 	'googleapp',
 	'githubapp',
+	'twitterapp',
 
 	'allauth',
 	'allauth.account',
