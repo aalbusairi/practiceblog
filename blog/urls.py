@@ -24,6 +24,9 @@ urlpatterns = [
 	url(r'^comments/', include('django_comments.urls')),
 	url(r'^api/', include('api.urls', namespace="api")),
 	url(r'^googleapp/', include('googleapp.urls', namespace="googleapp")),
+	url(r'^accounts/', include('allauth.urls')),
+	url(r'^github/', include('githubapp.urls', namespace="github")),
+	url(r'^twitter/', include('twitterapp.urls', namespace="twitter")),
 ]
 if settings.DEBUG:
 	urlpatterns+=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

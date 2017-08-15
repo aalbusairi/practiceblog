@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Coded Member List:</h1>
+<div class="row">
+	<div class="col-sm-6 col-sm-offset-3">
+		<ol>
+		{% for result in response %}
+			<li>{{result.login}}, {{result.id}}, {{result.avatar_url}}</li>
+		{% endfor %}
+		</ol>
+	</div>
+</div>
+{% endblock content %}

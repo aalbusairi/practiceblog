@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Branches:</h1>
+<div class="row">
+	<div class="col-sm-6 col-sm-offset-3">
+		<ul>
+		{% for result in response %}
+			<li>{{result.name}}</li>
+			<form action="{{result.commit.url}}" method="get"><button type="submit">URL</button></form>
+		{% endfor %}
+		</ul>
+	</div>
+</div>
+{% endblock content %}

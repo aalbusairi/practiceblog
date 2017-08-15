@@ -44,6 +44,14 @@ INSTALLED_APPS = [
 	'rest_framework',
 	'api',
 	'googleapp',
+	'githubapp',
+
+	'allauth',
+	'allauth.account',
+	'allauth.socialaccount',
+
+	'allauth.socialaccount.providers.github',
+	'allauth.socialaccount.providers.twitter',
 ]
 
 REST_FRAMEWORK = {
@@ -55,7 +63,22 @@ REST_FRAMEWORK = {
 }
 
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=43200),
+	'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=43200),
+}
+
+AUTHENTICATION_BACKENDS = (
+	'django.contrib.auth.backends.ModelBackend',
+	'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+SOCIALACCOUNT_PROVIDERS = {
+	'github': {
+		'SCOPE': [
+			'user',
+			'repo',
+			'read:org',
+		],
+	}
 }
 
 SITE_ID = 1
@@ -147,3 +170,5 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'  
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+LOGIN_REDIRECT_URL = '/'
